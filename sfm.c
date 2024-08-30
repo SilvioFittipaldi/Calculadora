@@ -1,6 +1,8 @@
 // Aluno:Silvio Fittipaldi de Morais
+// E-mail: sfm@cesar.school
 // Primeiro commit 00:15 30/08/2024
 // Segundo commit 13:45 30/08/2024
+// Terceiro commit 20:35 30/08/2024
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -17,7 +19,7 @@ void BinarioFuncao(int num) {
     printf("\nConvertendo %d para base 2:\n", num);
     while (num > 0) {
         binario[i] = num % 2;
-        printf("Passo %d: %d %% 2 = %d (resto), %d / 2 = %d (quociente)\n", i+1, num, binario[i], num, num / 2);
+        printf("Passo %d: %d %% 2 = %d (resto), %d / 2 = %d (quociente)\n", i + 1, num, binario[i], num, num / 2);
         num = num / 2;
         i++;
     }
@@ -40,7 +42,7 @@ void OctalFuncao(int num) {
     printf("\nConvertendo %d para base 8:\n", num);
     while (num > 0) {
         octal[i] = num % 8;
-        printf("Passo %d: %d %% 8 = %d (resto), %d / 8 = %d (quociente)\n", i+1, num, octal[i], num, num / 8);
+        printf("Passo %d: %d %% 8 = %d (resto), %d / 8 = %d (quociente)\n", i + 1, num, octal[i], num, num / 8);
         num = num / 8;
         i++;
     }
@@ -68,7 +70,7 @@ void HexadecimalFuncao(int num) {
         else
             hexadecimal[i] = 55 + remainder;
 
-        printf("Passo %d: %d %% 16 = %d (resto), %d / 16 = %d (quociente)\n", i+1, num, remainder, num, num / 16);
+        printf("Passo %d: %d %% 16 = %d (resto), %d / 16 = %d (quociente)\n", i + 1, num, remainder, num, num / 16);
         num = num / 16;
         i++;
     }
@@ -123,6 +125,34 @@ void complemento2Funcao(int num) {
     printf("\n");
 }
 
+void FloatFuncao(float num) {
+    int bits = *(int*)&num;
+
+    int sinal = (bits >> 31) & 1;
+    int expoente = (bits >> 23) & 0xFF;
+    int fracao = bits & 0x7FFFFF;
+
+    printf("\nConvertendo %f para formato float:\n", num);
+    printf("Sinal: %d\n", sinal);
+    printf("Expoente: %d (sem viés)\n", expoente);
+    printf("Expoente com viés: %d\n", expoente - 127);
+    printf("Fração: 0x%X\n", fracao);
+}
+
+void DoubleFuncao(double num) {
+    long long bits = *(long long*)&num;
+
+    int sinal = (bits >> 63) & 1;
+    int expoente = (bits >> 52) & 0x7FF;
+    long long fracao = bits & 0xFFFFFFFFFFFFF;
+
+    printf("\nConvertendo %f para formato double:\n", num);
+    printf("Sinal: %d\n", sinal);
+    printf("Expoente: %d (sem viés)\n", expoente);
+    printf("Expoente com viés: %d\n", expoente - 1023);
+    printf("Fração: 0x%llX\n", fracao);
+}
+
 int main() {
     char input[100];
     int num;
@@ -145,10 +175,12 @@ int main() {
         printf("3 - Converter para base 16\n");
         printf("4 - Converter para BCD\n");
         printf("5 - Converter para Complemento a 2 (16 bits)\n");
+        printf("6 - Converter para formato float\n");
+        printf("7 - Converter para formato double\n");
         printf("Digite sua escolha: ");
         scanf("%d", &opcao);
 
-        switch(opcao) {
+        switch (opcao) {
             case 1:
                 BinarioFuncao(num);
                 break;
@@ -164,6 +196,16 @@ int main() {
             case 5:
                 complemento2Funcao(num);
                 break;
+            case 6: {
+                float numFloat = strtof(input, NULL);
+                FloatFuncao(numFloat);
+                break;
+            }
+            case 7: {
+                double numDouble = strtod(input, NULL);
+                DoubleFuncao(numDouble);
+                break;
+            }
             default:
                 printf("Opção inválida!\n");
         }
