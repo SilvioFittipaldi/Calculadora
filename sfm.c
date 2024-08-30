@@ -1,17 +1,22 @@
 // Aluno:Silvio Fittipaldi de Morais
-// Primeira primeiro commit 00:15 30/08/2024
+// Primeiro commit 00:15 30/08/2024
+// Segundo commit 13:45 30/08/2024
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 void BinarioFuncao(int num) {
+    if (num < 0) {
+        printf("Números negativos não são suportados para esta operação.\n");
+        return;
+    }
     int binario[32];
     int i = 0;
 
     printf("\nConvertendo %d para base 2:\n", num);
     while (num > 0) {
-            binario[i] = num % 2;
+        binario[i] = num % 2;
         printf("Passo %d: %d %% 2 = %d (resto), %d / 2 = %d (quociente)\n", i+1, num, binario[i], num, num / 2);
         num = num / 2;
         i++;
@@ -25,6 +30,10 @@ void BinarioFuncao(int num) {
 }
 
 void OctalFuncao(int num) {
+    if (num < 0) {
+        printf("Números negativos não são suportados para esta operação.\n");
+        return;
+    }
     int octal[32];
     int i = 0;
 
@@ -44,6 +53,10 @@ void OctalFuncao(int num) {
 }
 
 void HexadecimalFuncao(int num) {
+    if (num < 0) {
+        printf("Números negativos não são suportados para esta operação.\n");
+        return;
+    }
     char hexadecimal[32];
     int i = 0;
 
@@ -54,7 +67,7 @@ void HexadecimalFuncao(int num) {
             hexadecimal[i] = 48 + remainder;
         else
             hexadecimal[i] = 55 + remainder;
-        
+
         printf("Passo %d: %d %% 16 = %d (resto), %d / 16 = %d (quociente)\n", i+1, num, remainder, num, num / 16);
         num = num / 16;
         i++;
@@ -68,6 +81,10 @@ void HexadecimalFuncao(int num) {
 }
 
 void BCDfuncao(int num) {
+    if (num < 0) {
+        printf("Números negativos não são suportados para esta operação.\n");
+        return;
+    }
     printf("\nConvertendo %d para BCD:\n", num);
     int digit, i = 0;
 
@@ -81,6 +98,27 @@ void BCDfuncao(int num) {
         printf(" ");
         num = num / 10;
         i++;
+    }
+    printf("\n");
+}
+
+void complemento2Funcao(int num) {
+    if (num < -32768 || num > 32767) {
+        printf("Erro: O número %d está fora do intervalo representável em 16 bits com sinal.\n", num);
+        return;
+    }
+
+    int complemento2;
+    if (num >= 0) {
+        complemento2 = num;
+    } else {
+        complemento2 = 65536 + num;
+    }
+
+    printf("\nConvertendo %d para complemento a 2 (16 bits):\n", num);
+    printf("Resultado em complemento a 2 (16 bits): ");
+    for (int i = 15; i >= 0; i--) {
+        printf("%d", (complemento2 >> i) & 1);
     }
     printf("\n");
 }
@@ -106,6 +144,7 @@ int main() {
         printf("2 - Converter para base 8\n");
         printf("3 - Converter para base 16\n");
         printf("4 - Converter para BCD\n");
+        printf("5 - Converter para Complemento a 2 (16 bits)\n");
         printf("Digite sua escolha: ");
         scanf("%d", &opcao);
 
@@ -121,6 +160,9 @@ int main() {
                 break;
             case 4:
                 BCDfuncao(num);
+                break;
+            case 5:
+                complemento2Funcao(num);
                 break;
             default:
                 printf("Opção inválida!\n");
